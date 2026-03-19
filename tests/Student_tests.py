@@ -1,4 +1,4 @@
-from Student import Student
+from src.Student import Student
 
 
 def test_create_student():
