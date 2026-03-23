@@ -1,16 +1,17 @@
-from src.Student import Student
+from src.school.Student import Student
+import pytest
 
 
 def test_create_student():
-    student = Student("student1", "10", [95, 78, 85])
-    assert student.id == "10"
-    assert student.name == "student1"
-    assert student.grades == [95, 78, 85]
+    student = Student("student1", "10", [4, 3.5, 3])
+    assert student.get_id() == "10"
+    assert student.get_name() == "student1"
+    assert student.get_grades() == [4, 3.5, 3]
 
 
 def test_get_average_with_grades():
-    student = Student("student1", "10", [94, 78, 85])
-    assert student.get_average() == 257 / 3.0
+    student = Student("student1", "10", [4, 3.5, 3])
+    assert student.get_average() == 10.5 / 3.0
 
 
 def test_get_average_without_grades():
@@ -19,14 +20,47 @@ def test_get_average_without_grades():
 
 
 def test_add_grade():
-    student = Student("student1", "10", [89, 75])
-    student.add_grade(77)
-    assert student.grades == [89, 75, 77]
+    student = Student("student1", "10", [4, 3.5])
+    student.add_grade(3)
+    assert student.get_grades() == [4, 3.5, 3]
 
 
 def test_str_():
-    student = Student("student1", "10", [77, 66, 93])
-    assert (
-        student.__str__()
-        == f"student id: {student.id} \nstudent name:{student.name}\nstudent grades:{student.grades}"
+    student = Student("student1", "10", [4, 3.5, 3])
+    assert student.__str__() == (
+        f"student id: {student.get_id()} \n"
+        f"student name:{student.get_name()}\n"
+        f"student grades:{student.get_grades()}"
     )
+
+
+def test_create_student_invalid_name():
+    with pytest.raises(TypeError):
+        Student(123, "10", [4, 3.5, 3])
+
+
+def test_create_student_invalid_id():
+    with pytest.raises(TypeError):
+        Student("student1", 10, [4, 3.5, 3])
+
+
+def test_create_student_invalid_grades_type():
+    with pytest.raises(TypeError):
+        Student("student1", "10", "not a list")
+
+
+def test_create_student_invalid_grade_value():
+    with pytest.raises(ValueError):
+        Student("student1", "10", [4, 3.5, 5])
+
+
+def test_add_invalid_grade():
+    student = Student("student1", "10", [4, 3.5, 3])
+    with pytest.raises(TypeError):
+        student.add_grade("not a number")
+
+
+def test_add_invalid_grade_value():
+    student = Student("student1", "10", [4, 3.5, 3])
+    with pytest.raises(ValueError):
+        student.add_grade(5)
