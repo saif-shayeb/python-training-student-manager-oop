@@ -34,11 +34,17 @@ class Student:
         return self.__id
 
     def get_grades(self):
-        return self.__grades
+        return list(self.__grades)
 
     def __str__(self):
-        result = f"student id: {self.__id} \nstudent name:{self.__name}\nstudent grades:{self.__grades}"
+        result = (
+            f"student id: {self.__id} \n"
+            f"student name:{self.__name}\n"
+            f"student grades:{self.__grades}"
+        )
         return result
 
     def __eq__(self, other):
-        return self.id == other.id
+        if not isinstance(other, Student):
+            return NotImplemented
+        return self.get_id() == other.get_id()

@@ -5,15 +5,21 @@ class Course:
         self.students = {}
 
     def enroll(self, student):
-        self.students[student.get_id()] = {student, 0.0}
+        self.students[student.get_id()] = {
+            "student": student,
+            "grade": 0.0,
+        }
 
     def set_grade(self, student, grade):
-        self.students[student.get_id()][1] = grade
+        student_id = student.get_id()
+        if student_id not in self.students:
+            raise KeyError("Student is not enrolled in this course")
+        self.students[student_id]["grade"] = grade
         student.add_grade(grade)
 
     def get_students(self):
         return self.students
 
     def __iter__(self):
-        for student in self.students:
-            yield student
+        for data in self.students.values():
+            yield data["student"]

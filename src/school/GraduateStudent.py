@@ -1,4 +1,4 @@
-from Student import Student
+from src.school.Student import Student
 
 
 class GraduateStudent(Student):
